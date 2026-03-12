@@ -5,372 +5,145 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Top Journal Quick Finder</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:        #0b0e14;
-  --surface:   #131720;
-  --surface2:  #1a2030;
-  --border:    #252c3c;
-  --border2:   #2e3850;
-  --gold:      #f0b93a;
-  --gold2:     #ffd87a;
-  --teal:      #2dd4bf;
-  --red:       #ff6b6b;
-  --text:      #e2e8f4;
-  --muted:     #6b7a99;
-  --muted2:    #8a9bb8;
-  --card-bg:   #141921;
+  --bg:    #0c0f16;
+  --surf:  #141923;
+  --surf2: #1c2435;
+  --bdr:   #222d42;
+  --bdr2:  #2d3c58;
+  --gold:  #f0b93a;
+  --gold2: #fdd273;
+  --teal:  #2dd4bf;
+  --red:   #f87171;
+  --txt:   #dde4f4;
+  --sub:   #8fa3c8;
+  --muted: #566882;
+  --card:  #131922;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--txt);
+  font-family:'DM Sans','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:999;pointer-events:none;
+  background:repeating-linear-gradient(180deg,transparent 0px,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 3px);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* HEADER */
+header{position:sticky;top:0;z-index:200;background:rgba(12,15,22,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(–bdr);}
+.hinner{max-width:1260px;margin:0 auto;padding:0 1.6rem;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:.9rem;}
+.logo-badge{font-family:‘IBM Plex Mono’,‘Courier New’,monospace;font-size:.55rem;font-weight:600;letter-spacing:.2em;background:var(–gold);color:#0c0f16;padding:.18rem .5rem;border-radius:3px;text-transform:uppercase;flex-shrink:0;line-height:1;}
+.logo-title{font-family:‘DM Serif Display’,Georgia,‘Times New Roman’,serif;font-size:1.1rem;color:var(–txt);letter-spacing:-.01em;line-height:1;}
+.logo-title em{font-style:italic;color:var(–gold);}
+.hright{display:flex;align-items:center;gap:.85rem;}
+.hdate{font-family:‘IBM Plex Mono’,monospace;font-size:.6rem;color:var(–muted);letter-spacing:.05em;}
+.live{width:6px;height:6px;border-radius:50%;background:var(–muted);transition:background .3s;flex-shrink:0;}
+.live.on{background:var(–teal);box-shadow:0 0 7px var(–teal);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-html, body {
-background: var(–bg);
-color: var(–text);
-font-family: ‘DM Sans’, sans-serif;
-min-height: 100vh;
-}
+/* MAIN */
+main{max-width:1260px;margin:0 auto;padding:1.8rem 1.6rem 5rem;}
 
-/* ── scanline texture overlay ── */
-body::before {
-content: ‘’;
-position: fixed; inset: 0; z-index: 0; pointer-events: none;
-background: repeating-linear-gradient(
-to bottom,
-transparent 0px, transparent 3px,
-rgba(0,0,0,.06) 3px, rgba(0,0,0,.06) 4px
-);
-}
+/* HERO */
+.hero{background:var(–surf);border:1px solid var(–bdr2);border-radius:14px;padding:1.6rem 1.8rem 1.4rem;margin-bottom:1.4rem;position:relative;overflow:hidden;}
+.hero::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(–gold) 0%,var(–teal) 50%,var(–gold) 100%);background-size:200%;animation:sweep 5s linear infinite;}
+@keyframes sweep{to{background-position:200% 0;}}
+.hero-label{font-family:‘IBM Plex Mono’,monospace;font-size:.57rem;letter-spacing:.18em;text-transform:uppercase;color:var(–gold);margin-bottom:.85rem;display:flex;align-items:center;gap:.6rem;}
+.hero-label::after{content:’’;flex:1;height:1px;background:var(–bdr);}
+.hero-row{display:flex;gap:.65rem;align-items:stretch;}
+.hero-input{flex:1;background:var(–surf2);border:1px solid var(–bdr2);border-radius:9px;padding:.72rem 1rem;font-size:.9rem;font-family:‘DM Sans’,sans-serif;color:var(–txt);outline:none;transition:border-color .2s,box-shadow .2s;min-width:0;}
+.hero-input::placeholder{color:var(–muted);}
+.hero-input:focus{border-color:var(–gold);box-shadow:0 0 0 3px rgba(240,185,58,.13);background:#1e2840;}
+.hero-btn{background:var(–gold);border:none;border-radius:9px;color:#0c0f16;padding:.72rem 1.5rem;font-family:‘IBM Plex Mono’,monospace;font-size:.78rem;font-weight:600;letter-spacing:.07em;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 4px 18px rgba(240,185,58,.22);transition:background .15s,transform .15s,opacity .15s;line-height:1;}
+.hero-btn:hover:not(:disabled){background:var(–gold2);transform:translateY(-1px);}
+.hero-btn:disabled{opacity:.4;cursor:not-allowed;}
+.hero-hint{margin-top:.7rem;font-size:.71rem;color:var(–muted);line-height:1.65;}
+.hero-hint b{color:var(–sub);font-weight:500;}
 
-/* ── HEADER ── */
-header {
-position: sticky; top: 0; z-index: 300;
-background: rgba(11,14,20,.92);
-backdrop-filter: blur(14px);
-border-bottom: 1px solid var(–border);
-}
-.hinner {
-max-width: 1280px; margin: 0 auto;
-padding: 0 1.8rem; height: 58px;
-display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-}
-.logo {
-display: flex; align-items: center; gap: 1rem;
-}
-.logo-mark {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: .6rem; font-weight: 600; letter-spacing: .18em;
-color: var(–bg); background: var(–gold);
-padding: .22rem .55rem; border-radius: 3px;
-text-transform: uppercase; flex-shrink: 0;
-}
-.logo-text {
-font-family: ‘DM Serif Display’, serif;
-font-size: 1.15rem; color: var(–text); letter-spacing: -.01em;
-}
-.logo-text em { font-style: italic; color: var(–gold); }
-.hright {
-display: flex; align-items: center; gap: 1rem;
-}
-.hdate {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: .62rem; color: var(–muted);
-letter-spacing: .06em;
-}
-.status-dot {
-width: 7px; height: 7px; border-radius: 50%;
-background: var(–muted); flex-shrink: 0;
-transition: background .3s;
-}
-.status-dot.active { background: var(–teal); box-shadow: 0 0 8px var(–teal); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+/* PROGRESS */
+#prog{margin-bottom:1.1rem;display:none;}
+.ptrack{height:2px;background:var(–bdr);border-radius:1px;overflow:hidden;}
+.pfill{height:100%;width:0%;background:linear-gradient(90deg,var(–gold),var(–teal));border-radius:1px;transition:width .3s ease;}
+#pmsg{font-family:‘IBM Plex Mono’,monospace;font-size:.59rem;color:var(–muted);margin-top:.45rem;letter-spacing:.04em;}
 
-/* ── MAIN ── */
-main {
-max-width: 1280px; margin: 0 auto;
-padding: 2rem 1.8rem 6rem;
-position: relative; z-index: 1;
-}
+/* BRIEF */
+#brief{background:var(–surf);border:1px solid var(–bdr);border-left:3px solid var(–teal);border-radius:11px;padding:.9rem 1.3rem;margin-bottom:1.3rem;display:none;}
+.brief-lbl{font-family:‘IBM Plex Mono’,monospace;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(–teal);margin-bottom:.38rem;}
+#briefTxt{font-size:.81rem;line-height:1.82;color:var(–sub);}
+#briefTxt strong{color:var(–txt);font-weight:600;}
 
-/* ── SEARCH BOX (top) ── */
-.search-hero {
-background: var(–surface);
-border: 1px solid var(–border2);
-border-radius: 16px;
-padding: 1.8rem 2rem;
-margin-bottom: 1.6rem;
-position: relative; overflow: hidden;
-}
-.search-hero::before {
-content: ‘’;
-position: absolute; top: 0; left: 0; right: 0; height: 2px;
-background: linear-gradient(90deg, var(–gold), var(–teal), var(–gold));
-background-size: 200% 100%;
-animation: shimmer 4s linear infinite;
-}
-@keyframes shimmer { to { background-position: 200% 0; } }
+/* FILTER */
+.fbar{display:none;flex-wrap:wrap;gap:.38rem;margin-bottom:1.1rem;align-items:center;}
+.flbl{font-family:‘IBM Plex Mono’,monospace;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(–muted);margin-right:.2rem;}
+.ftag{display:inline-flex;align-items:center;gap:.3rem;border:1px solid var(–bdr2);background:var(–surf);border-radius:6px;padding:.26rem .66rem;font-size:.65rem;color:var(–sub);cursor:pointer;white-space:nowrap;font-family:‘DM Sans’,sans-serif;transition:all .14s;}
+.ftag:hover{border-color:var(–gold);color:var(–gold);background:rgba(240,185,58,.06);}
+.ftag.on{border-color:var(–gold);color:var(–gold);background:rgba(240,185,58,.1);font-weight:600;}
+.flogo{width:12px;height:12px;border-radius:2px;object-fit:contain;flex-shrink:0;}
 
-.sh-label {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: .58rem; letter-spacing: .16em; text-transform: uppercase;
-color: var(–gold); margin-bottom: .9rem;
-display: flex; align-items: center; gap: .5rem;
-}
-.sh-label::after {
-content: ‘’; flex: 1; height: 1px; background: var(–border);
-}
-.sh-row {
-display: flex; gap: .75rem; align-items: stretch;
-}
-.sh-input {
-flex: 1; background: var(–surface2);
-border: 1px solid var(–border2); border-radius: 10px;
-padding: .75rem 1.1rem;
-font-size: .92rem; font-family: ‘DM Sans’, sans-serif;
-color: var(–text); outline: none;
-transition: border-color .2s, box-shadow .2s;
-}
-.sh-input::placeholder { color: var(–muted); }
-.sh-input:focus {
-border-color: var(–gold);
-box-shadow: 0 0 0 3px rgba(240,185,58,.12);
-}
-.sh-btn {
-background: var(–gold);
-border: none; border-radius: 10px; color: var(–bg);
-padding: .75rem 1.6rem;
-font-size: .82rem; font-family: ‘IBM Plex Mono’, monospace;
-font-weight: 600; letter-spacing: .06em;
-cursor: pointer; white-space: nowrap; flex-shrink: 0;
-box-shadow: 0 4px 16px rgba(240,185,58,.25);
-transition: background .15s, transform .15s, opacity .15s;
-}
-.sh-btn:hover { background: var(–gold2); transform: translateY(-1px); }
-.sh-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
-.sh-hint {
-font-size: .72rem; color: var(–muted); margin-top: .75rem; line-height: 1.6;
-}
-.sh-hint strong { color: var(–muted2); }
+/* SECHEAD */
+.sechead{display:none;align-items:center;justify-content:space-between;padding-bottom:.75rem;margin-bottom:1rem;border-bottom:1px solid var(–bdr);}
+.sectitle{font-family:‘IBM Plex Mono’,monospace;font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(–muted);}
+#pcount{font-family:‘IBM Plex Mono’,monospace;font-size:.56rem;color:var(–gold);}
 
-/* ── PROGRESS ── */
-#progWrap { margin-bottom: 1.2rem; display: none; }
-.progtrack {
-height: 2px; background: var(–border); border-radius: 1px; overflow: hidden;
-}
-.progfill {
-height: 100%; width: 0%;
-background: linear-gradient(90deg, var(–gold), var(–teal));
-border-radius: 1px; transition: width .35s ease;
-}
-#progMsg {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: .6rem; color: var(–muted); margin-top: .5rem;
-letter-spacing: .04em;
-}
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:1.05rem;align-items:start;}
 
-/* ── BRIEFING ── */
-.briefbox {
-background: var(–surface);
-border: 1px solid var(–border);
-border-left: 3px solid var(–teal);
-border-radius: 12px;
-padding: 1rem 1.4rem;
-margin-bottom: 1.4rem;
-display: none;
-}
-.briefbox.visible { display: block; }
-.brief-label {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: .56rem; letter-spacing: .14em; text-transform: uppercase;
-color: var(–teal); margin-bottom: .45rem;
-}
-#briefText {
-font-size: .82rem; line-height: 1.8; color: var(–muted2);
-}
-#briefText strong { color: var(–text); font-weight: 600; }
+/* CARD */
+.card{background:var(–card);border:1px solid var(–bdr);border-radius:11px;overflow:hidden;opacity:0;animation:up .4s forwards;transition:border-color .2s,transform .2s,box-shadow .2s;}
+.card:hover{border-color:var(–bdr2);transform:translateY(-3px);box-shadow:0 14px 42px rgba(0,0,0,.5);}
+@keyframes up{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.card:nth-child(1){animation-delay:.04s}.card:nth-child(2){animation-delay:.08s}
+.card:nth-child(3){animation-delay:.12s}.card:nth-child(4){animation-delay:.16s}
+.card:nth-child(5){animation-delay:.20s}.card:nth-child(6){animation-delay:.24s}
+.card:nth-child(7){animation-delay:.28s}.card:nth-child(8){animation-delay:.32s}
+.card:nth-child(9){animation-delay:.36s}.card:nth-child(10){animation-delay:.40s}
+.cstripe{height:3px;}
+.cbody{padding:1.05rem 1.2rem 1.2rem;}
+.cmeta{display:flex;align-items:center;gap:.45rem;margin-bottom:.65rem;flex-wrap:wrap;}
+.jtag{display:inline-flex;align-items:center;gap:.3rem;padding:.18rem .52rem;border-radius:5px;font-family:‘IBM Plex Mono’,monospace;font-size:.58rem;font-weight:600;letter-spacing:.02em;}
+.jlogo{width:11px;height:11px;border-radius:2px;object-fit:contain;flex-shrink:0;}
+.ytag{font-family:‘IBM Plex Mono’,monospace;font-size:.56rem;color:var(–muted);margin-left:auto;}
+.ctitle{font-family:‘DM Serif Display’,Georgia,serif;font-size:.95rem;line-height:1.46;color:var(–txt);margin-bottom:.5rem;}
+.cauth{font-family:‘IBM Plex Mono’,monospace;font-size:.6rem;color:var(–muted);margin-bottom:.65rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.slbl{font-family:‘IBM Plex Mono’,monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(–teal);margin-bottom:.28rem;}
+.csum{font-size:.78rem;line-height:1.82;color:var(–sub);margin-bottom:.85rem;white-space:pre-wrap;}
+.csum.pend{color:var(–muted);font-style:italic;}
+.csum.fail{color:var(–red);font-size:.72rem;}
+.cfoot{display:flex;align-items:center;justify-content:space-between;padding-top:.75rem;border-top:1px solid var(–bdr);gap:.4rem;}
+.cdoi{font-family:‘IBM Plex Mono’,monospace;font-size:.55rem;color:var(–muted);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.clink{display:inline-flex;align-items:center;gap:.32rem;padding:.3rem .85rem;border-radius:6px;font-family:‘IBM Plex Mono’,monospace;font-size:.63rem;font-weight:600;letter-spacing:.04em;color:#0c0f16;text-decoration:none;background:var(–gold);flex-shrink:0;transition:background .14s,transform .13s;box-shadow:0 2px 8px rgba(240,185,58,.2);}
+.clink:hover{background:var(–gold2);transform:translateY(-1px);}
+.clink svg{width:9px;height:9px;}
 
-/* ── FILTER BAR ── */
-.filterbar {
-display: flex; flex-wrap: wrap; gap: .4rem;
-margin-bottom: 1.2rem; align-items: center;
-}
-.flabel {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: .56rem; letter-spacing: .14em; text-transform: uppercase;
-color: var(–muted); margin-right: .2rem;
-}
-.ftag {
-display: inline-flex; align-items: center; gap: .35rem;
-border: 1px solid var(–border2); background: var(–surface);
-border-radius: 6px; padding: .28rem .7rem;
-font-size: .66rem; font-family: ‘DM Sans’, sans-serif;
-color: var(–muted2); cursor: pointer; white-space: nowrap;
-transition: all .14s;
-}
-.ftag:hover { border-color: var(–gold); color: var(–gold); background: rgba(240,185,58,.06); }
-.ftag.on { background: rgba(240,185,58,.12); border-color: var(–gold); color: var(–gold); font-weight: 600; }
-.ftag-logo { width: 13px; height: 13px; border-radius: 2px; object-fit: contain; flex-shrink: 0; }
+/* EMPTY */
+.empty{grid-column:1/-1;text-align:center;padding:5rem 2rem;color:var(–muted);}
+.empty-ico{font-size:2.6rem;display:block;margin-bottom:.9rem;}
+.empty h3{font-family:‘DM Serif Display’,Georgia,serif;font-size:1.15rem;color:var(–sub);margin-bottom:.5rem;}
+.empty p{font-size:.75rem;line-height:1.75;max-width:400px;margin:0 auto;}
+.empty code{font-family:‘IBM Plex Mono’,monospace;font-size:.7rem;color:var(–gold);background:rgba(240,185,58,.1);padding:.1rem .38rem;border-radius:4px;}
 
-/* ── SECTION HEAD ── */
-.sechead {
-display: flex; align-items: center; justify-content: space-between;
-margin-bottom: 1.1rem;
-padding-bottom: .8rem;
-border-bottom: 1px solid var(–border);
-}
-.sectitle {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
-color: var(–muted);
-}
-#pcount {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: .58rem; color: var(–gold);
-}
+/* SPINNER */
+.sp{display:inline-block;width:11px;height:11px;border:1.5px solid var(–bdr2);border-top-color:var(–gold);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:.3rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-/* ── GRID ── */
-.grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
-gap: 1.1rem; align-items: start;
-}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(–bg);}
+::-webkit-scrollbar-thumb{background:var(–bdr2);border-radius:2px;}
 
-/* ── CARD ── */
-.card {
-background: var(–card-bg);
-border: 1px solid var(–border);
-border-radius: 12px; overflow: hidden;
-transition: border-color .2s, transform .2s, box-shadow .2s;
-opacity: 0; animation: slideUp .45s forwards;
-height: auto;
-}
-.card:hover {
-border-color: var(–border2);
-transform: translateY(-3px);
-box-shadow: 0 12px 40px rgba(0,0,0,.45);
-}
-@keyframes slideUp {
-from { opacity:0; transform:translateY(12px); }
-to   { opacity:1; transform:translateY(0); }
-}
-.card:nth-child(1){animation-delay:.04s} .card:nth-child(2){animation-delay:.09s}
-.card:nth-child(3){animation-delay:.14s} .card:nth-child(4){animation-delay:.19s}
-.card:nth-child(5){animation-delay:.24s} .card:nth-child(6){animation-delay:.29s}
-.card:nth-child(7){animation-delay:.34s} .card:nth-child(8){animation-delay:.39s}
-.card:nth-child(9){animation-delay:.44s}
-
-.card-stripe { height: 3px; }
-.card-body { padding: 1.1rem 1.3rem 1.3rem; }
-
-.card-meta {
-display: flex; align-items: center; gap: .5rem;
-margin-bottom: .7rem; flex-wrap: wrap;
-}
-.jtag {
-display: inline-flex; align-items: center; gap: .32rem;
-padding: .2rem .55rem; border-radius: 5px;
-font-size: .6rem; font-weight: 700;
-font-family: ‘IBM Plex Mono’, monospace; letter-spacing: .02em;
-}
-.jtag-logo { width: 12px; height: 12px; border-radius: 2px; object-fit: contain; flex-shrink: 0; }
-.ytag {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: .57rem; color: var(–muted);
-margin-left: auto;
-}
-
-.card-title {
-font-family: ‘DM Serif Display’, serif;
-font-size: .98rem; line-height: 1.45;
-color: var(–text); margin-bottom: .55rem;
-}
-.card-auth {
-font-size: .62rem; color: var(–muted);
-font-family: ‘IBM Plex Mono’, monospace;
-margin-bottom: .7rem;
-white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-
-.sum-label {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: .54rem; letter-spacing: .1em; text-transform: uppercase;
-color: var(–teal); margin-bottom: .3rem;
-}
-.card-sum {
-font-size: .79rem; line-height: 1.82; color: #8a9bb8;
-margin-bottom: .9rem; white-space: pre-wrap;
-}
-.card-sum.pend { color: var(–muted); font-style: italic; }
-.card-sum.fail { color: var(–red); font-size: .72rem; }
-
-.card-foot {
-display: flex; align-items: center; justify-content: space-between;
-padding-top: .8rem; border-top: 1px solid var(–border); gap: .4rem;
-margin-top: auto;
-}
-.card-doi {
-font-size: .57rem; color: var(–muted);
-font-family: ‘IBM Plex Mono’, monospace;
-flex: 1; min-width: 0;
-white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.card-link {
-display: inline-flex; align-items: center; gap: .35rem;
-padding: .32rem .9rem; border-radius: 6px;
-font-size: .66rem; font-weight: 600;
-font-family: ‘IBM Plex Mono’, monospace;
-letter-spacing: .04em;
-color: var(–bg); text-decoration: none;
-flex-shrink: 0; white-space: nowrap;
-background: var(–gold);
-transition: background .15s, transform .14s;
-}
-.card-link:hover { background: var(–gold2); transform: translateY(-1px); }
-.card-link svg { width: 9px; height: 9px; }
-
-/* ── EMPTY / START ── */
-.empty {
-grid-column: 1/-1; text-align: center;
-padding: 5rem 2rem; color: var(–muted);
-}
-.empty-icon {
-font-size: 2.8rem; display: block; margin-bottom: 1rem;
-filter: grayscale(1) opacity(.5);
-}
-.empty h3 {
-font-family: ‘DM Serif Display’, serif;
-font-size: 1.2rem; color: var(–muted2); margin-bottom: .5rem;
-}
-.empty p {
-font-size: .76rem; line-height: 1.75;
-max-width: 420px; margin: 0 auto; color: var(–muted);
-}
-.empty code {
-font-family: ‘IBM Plex Mono’, monospace;
-font-size: .72rem; color: var(–gold);
-background: rgba(240,185,58,.1); padding: .1rem .4rem; border-radius: 4px;
-}
-
-/* ── SPINNER ── */
-.sp {
-display: inline-block; width: 11px; height: 11px;
-border: 1.5px solid var(–border2); border-top-color: var(–gold);
-border-radius: 50%; animation: spin .6s linear infinite;
-vertical-align: middle; margin-right: .3rem;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(–bg); }
-::-webkit-scrollbar-thumb { background: var(–border2); border-radius: 2px; }
-
-@media (max-width: 680px) {
-.grid { grid-template-columns: 1fr; }
-.hinner, main { padding-left: 1rem; padding-right: 1rem; }
-.hdate, .status-dot { display: none; }
-.sh-row { flex-direction: column; }
+@media(max-width:640px){
+.grid{grid-template-columns:1fr;}
+main,.hinner{padding-left:1rem;padding-right:1rem;}
+.hdate{display:none;}
+.hero-row{flex-direction:column;}
+.hero-btn{width:100%;justify-content:center;}
 }
 </style>
 
@@ -380,410 +153,219 @@ vertical-align: middle; margin-right: .3rem;
 <header>
   <div class="hinner">
     <div class="logo">
-      <span class="logo-mark">TQJF</span>
-      <span class="logo-text">Top Journal <em>Quick</em> Finder</span>
+      <span class="logo-badge">TQJF</span>
+      <span class="logo-title">Top Journal <em>Quick</em> Finder</span>
     </div>
     <div class="hright">
       <span class="hdate" id="hdate"></span>
-      <span class="status-dot" id="statusDot"></span>
+      <span class="live" id="live"></span>
     </div>
   </div>
 </header>
 
 <main>
-
-  <!-- ── SEARCH HERO (TOP) ── -->
-
-  <div class="search-hero">
-    <div class="sh-label">키워드 검색</div>
-    <div class="sh-row">
-      <input class="sh-input" id="kwInput" type="text"
-        placeholder="검색할 키워드를 입력하세요  예: perovskite solar cell, soft robot gripper, wearable biosensor..."
-        onkeydown="if(event.key==='Enter') doSearch()">
-      <button class="sh-btn" id="searchBtn" onclick="doSearch()">SEARCH →</button>
+  <div class="hero">
+    <div class="hero-label">키워드 검색</div>
+    <div class="hero-row">
+      <input class="hero-input" id="kwInput" type="text"
+        placeholder="검색할 키워드를 입력하세요  예: perovskite solar cell, soft robot gripper, triboelectric nanogenerator..."
+        onkeydown="if(event.key==='Enter')doSearch()">
+      <button class="hero-btn" id="searchBtn" onclick="doSearch()">SEARCH →</button>
     </div>
-    <div class="sh-hint">
-      10개 상위 저널 (<strong>Nature, Science, Advanced Materials</strong> 등)에서 입력한 키워드와 관련된 논문을 실시간 검색합니다.
+    <div class="hero-hint">
+      10개 상위 저널 (<b>Nature, Science, Advanced Materials</b> 등)에서 입력한 키워드와 관련된 논문을 실시간으로 검색합니다.
     </div>
   </div>
 
-  <!-- ── PROGRESS ── -->
-
-  <div id="progWrap">
-    <div class="progtrack"><div class="progfill" id="progFill"></div></div>
-    <div id="progMsg">준비 중...</div>
+  <div id="prog">
+    <div class="ptrack"><div class="pfill" id="pfill"></div></div>
+    <div id="pmsg">준비 중...</div>
   </div>
 
-  <!-- ── BRIEFING ── -->
-
-  <div class="briefbox" id="briefbox">
-    <div class="brief-label">검색 결과 요약</div>
-    <div id="briefText"></div>
+  <div id="brief">
+    <div class="brief-lbl">검색 결과 요약</div>
+    <div id="briefTxt"></div>
   </div>
 
-  <!-- ── FILTER ── -->
-
-  <div class="filterbar" id="filterbar" style="display:none">
-    <span class="flabel">저널 필터</span>
+  <div class="fbar" id="fbar">
+    <span class="flbl">저널 필터</span>
     <button class="ftag on" onclick="setFilter(this,'all')">전체</button>
   </div>
 
-  <!-- ── SECTION HEAD ── -->
-
-  <div class="sechead" id="sechead" style="display:none">
+  <div class="sechead" id="sechead">
     <span class="sectitle">SEARCH RESULTS</span>
     <span id="pcount"></span>
   </div>
 
-  <!-- ── GRID ── -->
-
   <div class="grid" id="grid">
     <div class="empty">
-      <span class="empty-icon">🔬</span>
+      <span class="empty-ico">🔬</span>
       <h3>검색어를 입력해 주세요</h3>
-      <p>
-        원하는 연구 키워드를 위의 검색창에 입력하고 <code>SEARCH →</code> 버튼을 누르면<br>
-        상위 저널에서 관련 논문을 즉시 찾아드립니다.
-      </p>
+      <p>원하는 연구 키워드를 위에 입력하고 <code>SEARCH →</code> 를 누르면<br>상위 저널에서 관련 논문을 즉시 찾아드립니다.</p>
     </div>
   </div>
-
 </main>
 
 <script>
-// ─────────────────────────────────────────────
-// JOURNALS
-// ─────────────────────────────────────────────
-const LOGOS = {
-  wiley:   'https://onlinelibrary.wiley.com/favicon.ico',
-  nature:  'https://www.nature.com/static/images/favicons/nature/apple-touch-icon-60x60.png',
-  science: 'https://www.science.org/favicon.ico',
-};
-
-const JOURNALS = [
-  { id:'Advanced Materials',            issn:'0935-9648', color:'#f0b93a', bg:'rgba(240,185,58,.12)', logo: LOGOS.wiley },
-  { id:'Advanced Science',              issn:'2198-3844', color:'#e05a8a', bg:'rgba(224,90,138,.12)', logo: LOGOS.wiley },
-  { id:'Science Advances',              issn:'2375-2548', color:'#4caf7d', bg:'rgba(76,175,125,.12)', logo: LOGOS.science },
-  { id:'Advanced Functional Materials', issn:'1616-3028', color:'#b44ec8', bg:'rgba(180,78,200,.12)', logo: LOGOS.wiley },
-  { id:'Science Robotics',              issn:'2470-9476', color:'#2dd4bf', bg:'rgba(45,212,191,.12)', logo: LOGOS.science },
-  { id:'Nature Machine Intelligence',   issn:'2522-5839', color:'#38bdf8', bg:'rgba(56,189,248,.12)', logo: LOGOS.nature },
-  { id:'Nature Electronics',            issn:'2520-1131', color:'#a78bfa', bg:'rgba(167,139,250,.12)', logo: LOGOS.nature },
-  { id:'Nature Communications',         issn:'2041-1723', color:'#60a5fa', bg:'rgba(96,165,250,.12)', logo: LOGOS.nature },
-  { id:'Nature',                        issn:'0028-0836', color:'#34d399', bg:'rgba(52,211,153,.12)', logo: LOGOS.nature },
-  { id:'Science',                       issn:'0036-8075', color:'#fb7185', bg:'rgba(251,113,133,.12)', logo: LOGOS.science },
+const LOGOS={wiley:'https://onlinelibrary.wiley.com/favicon.ico',nature:'https://www.nature.com/static/images/favicons/nature/apple-touch-icon-60x60.png',science:'https://www.science.org/favicon.ico'};
+const JOURNALS=[
+  {id:'Advanced Materials',issn:'0935-9648',c:'#f0b93a',bg:'rgba(240,185,58,.13)',logo:LOGOS.wiley},
+  {id:'Advanced Science',issn:'2198-3844',c:'#e05a8a',bg:'rgba(224,90,138,.13)',logo:LOGOS.wiley},
+  {id:'Science Advances',issn:'2375-2548',c:'#4caf7d',bg:'rgba(76,175,125,.13)',logo:LOGOS.science},
+  {id:'Advanced Functional Materials',issn:'1616-3028',c:'#b44ec8',bg:'rgba(180,78,200,.13)',logo:LOGOS.wiley},
+  {id:'Science Robotics',issn:'2470-9476',c:'#2dd4bf',bg:'rgba(45,212,191,.13)',logo:LOGOS.science},
+  {id:'Nature Machine Intelligence',issn:'2522-5839',c:'#38bdf8',bg:'rgba(56,189,248,.13)',logo:LOGOS.nature},
+  {id:'Nature Electronics',issn:'2520-1131',c:'#a78bfa',bg:'rgba(167,139,250,.13)',logo:LOGOS.nature},
+  {id:'Nature Communications',issn:'2041-1723',c:'#60a5fa',bg:'rgba(96,165,250,.13)',logo:LOGOS.nature},
+  {id:'Nature',issn:'0028-0836',c:'#34d399',bg:'rgba(52,211,153,.13)',logo:LOGOS.nature},
+  {id:'Science',issn:'0036-8075',c:'#fb7185',bg:'rgba(251,113,133,.13)',logo:LOGOS.science},
 ];
+const CR='https://api.crossref.org/journals',MAIL='mailto=tqjf@example.com';
+let papers=[],curFilter='all',busy=false;
 
-const CR = 'https://api.crossref.org/journals';
-const MAILTO = 'mailto=tqjf@example.com';
-
-let papers = [];
-let curFilter = 'all';
-let busy = false;
-let lastKeyword = '';
-
-// ─────────────────────────────────────────────
-// SEARCH ENTRY
-// ─────────────────────────────────────────────
-async function doSearch() {
-  const kw = document.getElementById('kwInput').value.trim();
-  if (!kw) {
-    document.getElementById('kwInput').focus();
-    document.getElementById('kwInput').style.borderColor = 'var(--red)';
-    setTimeout(() => document.getElementById('kwInput').style.borderColor = '', 1200);
-    return;
-  }
-  if (busy) return;
-  lastKeyword = kw;
+async function doSearch(){
+  const kw=document.getElementById('kwInput').value.trim();
+  if(!kw){const i=document.getElementById('kwInput');i.style.borderColor='#f87171';i.focus();setTimeout(()=>i.style.borderColor='',1400);return;}
+  if(busy)return;
   await load(kw);
 }
 
-async function load(keyword) {
-  busy = true;
-  const btn = document.getElementById('searchBtn');
-  btn.disabled = true; btn.textContent = '검색 중...';
-  document.getElementById('statusDot').classList.add('active');
+async function load(kw){
+  busy=true;
+  const btn=document.getElementById('searchBtn');
+  btn.disabled=true;btn.textContent='검색 중...';
+  document.getElementById('live').classList.add('on');
+  papers=[];
+  document.getElementById('brief').style.display='none';
+  document.getElementById('fbar').style.display='none';
+  document.getElementById('sechead').style.display='none';
+  showProg(true);setP(0,'저널 연결 중...');renderGrid();
 
-  papers = [];
-  document.getElementById('briefbox').classList.remove('visible');
-  document.getElementById('filterbar').style.display = 'none';
-  document.getElementById('sechead').style.display = 'none';
-
-  showProg(true); setProgress(0, '저널 연결 중...');
-  renderGrid();
-
-  let done = 0;
-  await Promise.allSettled(JOURNALS.map(j =>
-    fetchOne(j, keyword).then(p => {
-      papers.push(p);
-      done++;
-      setProgress(Math.round(done / JOURNALS.length * 50),
-        `${done}/${JOURNALS.length} 저널 완료`);
-    })
+  let done=0;
+  await Promise.allSettled(JOURNALS.map(j=>
+    fetchOne(j,kw).then(p=>{papers.push(p);done++;setP(Math.round(done/JOURNALS.length*50),`${done}/${JOURNALS.length} 저널 완료`);})
   ));
-
-  // Sort by journal order
-  papers.sort((a, b) =>
-    JOURNALS.findIndex(j => j.id === a.journal.id) -
-    JOURNALS.findIndex(j => j.id === b.journal.id)
-  );
-  papers.forEach((p, i) => p._id = i);
-
-  // Build filter
-  buildFilterBar();
-  document.getElementById('filterbar').style.display = 'flex';
-  document.getElementById('sechead').style.display = 'flex';
+  papers.sort((a,b)=>JOURNALS.findIndex(j=>j.id===a.journal.id)-JOURNALS.findIndex(j=>j.id===b.journal.id));
+  papers.forEach((p,i)=>p._id=i);
+  buildFilters();
+  document.getElementById('fbar').style.display='flex';
+  document.getElementById('sechead').style.display='flex';
   renderGrid();
 
-  // Translate
-  const valid = papers.filter(p => p.title && p.abstract);
-  if (valid.length) {
-    setProgress(55, `번역 중 0/${valid.length}...`);
-    await translateAll(valid);
-  }
-
-  buildBriefing(keyword);
-  setProgress(100, '완료');
-  setTimeout(() => showProg(false), 700);
-
-  btn.disabled = false; btn.textContent = 'SEARCH →';
-  document.getElementById('statusDot').classList.remove('active');
-  busy = false;
+  const valid=papers.filter(p=>p.title&&p.abstract);
+  if(valid.length){setP(55,`번역 중 0/${valid.length}...`);await translateAll(valid);}
+  buildBrief(kw);setP(100,'완료');setTimeout(()=>showProg(false),700);
+  btn.disabled=false;btn.textContent='SEARCH →';
+  document.getElementById('live').classList.remove('on');busy=false;
 }
 
-// ─────────────────────────────────────────────
-// CrossRef
-// ─────────────────────────────────────────────
-async function fetchOne(j, keyword) {
-  const queries = [
-    keyword,
-    `${keyword} materials device sensor`,
-    `${keyword} fabrication synthesis`,
-    keyword.split(' ').slice(0, 2).join(' '),
-  ];
-
-  for (const query of queries) {
-    try {
-      const url = `${CR}/${j.issn}/works?query=${encodeURIComponent(query)}` +
-        `&filter=from-pub-date:2018-01-01,type:journal-article,has-abstract:1` +
-        `&sort=relevance&rows=100` +
-        `&select=DOI,title,author,published,abstract,URL&${MAILTO}`;
-
-      const r = await fetch(url, { signal: AbortSignal.timeout(20000) });
-      if (!r.ok) continue;
-      const d = await r.json();
-
-      const items = (d?.message?.items || []).filter(it =>
-        it.title?.[0] && it.title[0].length > 20 &&
-        it.abstract && it.abstract.length > 80
-      );
-      if (!items.length) continue;
-
-      const pick = items[Math.floor(Math.random() * Math.min(items.length, 20))];
-      const authors = (pick.author || []).slice(0, 4)
-        .map(a => `${a.family || ''} ${(a.given || '').charAt(0)}.`.trim())
-        .join(', ') + ((pick.author?.length || 0) > 4 ? ' et al.' : '');
-      const year = pick.published?.['date-parts']?.[0]?.[0] || '';
-      const doi  = pick.DOI || '';
-      const link = doi ? `https://doi.org/${doi}` : (pick.URL || '#');
-      const abstract = (pick.abstract || '')
-        .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-
-      return { journal: j, title: pick.title[0], authors, year, doi, link, abstract, summaryKo: null, _id: null };
-    } catch { continue; }
+async function fetchOne(j,kw){
+  const qs=[kw,`${kw} materials device`,kw.split(' ').slice(0,2).join(' '),'materials device sensor'];
+  for(const q of qs){
+    try{
+      const url=`${CR}/${j.issn}/works?query=${encodeURIComponent(q)}&filter=from-pub-date:2018-01-01,type:journal-article,has-abstract:1&sort=relevance&rows=100&select=DOI,title,author,published,abstract,URL&${MAIL}`;
+      const r=await fetch(url,{signal:AbortSignal.timeout(20000)});
+      if(!r.ok)continue;
+      const d=await r.json();
+      const items=(d?.message?.items||[]).filter(it=>it.title?.[0]&&it.title[0].length>20&&it.abstract&&it.abstract.length>80);
+      if(!items.length)continue;
+      const pick=items[Math.floor(Math.random()*Math.min(items.length,20))];
+      const authors=(pick.author||[]).slice(0,4).map(a=>`${a.family||''} ${(a.given||'').charAt(0)}.`.trim()).join(', ')+((pick.author?.length||0)>4?' et al.':'');
+      const year=pick.published?.['date-parts']?.[0]?.[0]||'';
+      const doi=pick.DOI||'';
+      const link=doi?`https://doi.org/${doi}`:(pick.URL||'#');
+      const abstract=(pick.abstract||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+      return{journal:j,title:pick.title[0],authors,year,doi,link,abstract,summaryKo:null,_id:null};
+    }catch{continue;}
   }
-  return { journal: j, title: null, error: '관련 논문 없음', _id: null };
+  return{journal:j,title:null,error:'관련 논문 없음',_id:null};
 }
 
-// ─────────────────────────────────────────────
-// Translation (Google Translate free endpoint)
-// ─────────────────────────────────────────────
-async function translateAll(validPapers) {
-  for (let i = 0; i < validPapers.length; i++) {
-    const p = validPapers[i];
-    setProgress(55 + Math.round((i / validPapers.length) * 42),
-      `번역 중 ${i+1}/${validPapers.length}...`);
-    p.summaryKo = await googleTranslate(p.abstract);
-    patchCard(p);
-    if (i < validPapers.length - 1) await sleep(120);
+async function translateAll(valid){
+  for(let i=0;i<valid.length;i++){
+    const p=valid[i];
+    setP(55+Math.round(i/valid.length*42),`번역 중 ${i+1}/${valid.length}...`);
+    p.summaryKo=await gTranslate(p.abstract);patchCard(p);
+    if(i<valid.length-1)await sleep(120);
   }
 }
-
-async function googleTranslate(text) {
-  const chunks = splitChunks(text, 4800);
-  const results = [];
-  for (let i = 0; i < chunks.length; i++) {
-    results.push(await gtChunk(chunks[i]));
-    if (i < chunks.length - 1) await sleep(80);
-  }
-  return results.join(' ').trim();
+async function gTranslate(t){const ch=splitChunks(t,4800),res=[];for(let i=0;i<ch.length;i++){res.push(await gtChunk(ch[i]));if(i<ch.length-1)await sleep(80);}return res.join(' ').trim();}
+async function gtChunk(text){
+  try{
+    const r=await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ko&dt=t&q=${encodeURIComponent(text)}`,{signal:AbortSignal.timeout(12000)});
+    if(!r.ok)throw 0;
+    const d=await r.json();const t=(d[0]||[]).map(s=>s[0]||'').join('');
+    if(t&&t.length>3)return t;throw 0;
+  }catch{return text;}
 }
-
-async function gtChunk(text) {
-  try {
-    const url = `https://translate.googleapis.com/translate_a/single` +
-      `?client=gtx&sl=en&tl=ko&dt=t&q=${encodeURIComponent(text)}`;
-    const r = await fetch(url, { signal: AbortSignal.timeout(12000) });
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const d = await r.json();
-    const t = (d[0] || []).map(seg => seg[0] || '').join('');
-    if (t && t.length > 3) return t;
-    throw new Error('empty');
-  } catch { return text; }
-}
-
-function splitChunks(text, maxLen) {
-  const sents = text.match(/[^.!?]+[.!?]+\s*/g) || [text];
-  const chunks = []; let cur = '';
-  for (const s of sents) {
-    if (cur.length + s.length > maxLen && cur) { chunks.push(cur.trim()); cur = s; }
-    else cur += s;
-  }
-  if (cur.trim()) chunks.push(cur.trim());
-  const res = [];
-  for (const ch of chunks) {
-    if (ch.length <= maxLen) { res.push(ch); continue; }
-    for (let i = 0; i < ch.length; i += maxLen) res.push(ch.slice(i, i + maxLen));
-  }
+function splitChunks(text,max){
+  const s=text.match(/[^.!?]+[.!?]+\s*/g)||[text];const ch=[];let cur='';
+  for(const x of s){if(cur.length+x.length>max&&cur){ch.push(cur.trim());cur=x;}else cur+=x;}
+  if(cur.trim())ch.push(cur.trim());
+  const res=[];for(const c of ch){if(c.length<=max){res.push(c);continue;}for(let i=0;i<c.length;i+=max)res.push(c.slice(i,i+max));}
   return res;
 }
 
-// ─────────────────────────────────────────────
-// Briefing
-// ─────────────────────────────────────────────
-function buildBriefing(keyword) {
-  const valid = papers.filter(p => p.title);
-  const el = document.getElementById('briefText');
-  const box = document.getElementById('briefbox');
-  if (!valid.length) { box.classList.remove('visible'); return; }
-
-  const years = [...new Set(valid.map(p => p.year).filter(Boolean))].sort();
-  const kw = extractKeywords(valid.map(p => p.title).join(' '));
-
-  el.innerHTML =
-    `키워드 <strong>"${esc(keyword)}"</strong>로 ` +
-    `<strong>${JOURNALS.length}개</strong> 저널을 검색하여 ` +
-    `<strong>${valid.length}편</strong>의 관련 논문을 찾았습니다. ` +
-    (years.length ? `출판 연도: <strong>${years[0]}–${years[years.length-1]}</strong>. ` : '') +
-    `주요 키워드: <strong>${kw.slice(0,5).join(', ')}</strong>.`;
-  box.classList.add('visible');
+function buildBrief(kw){
+  const valid=papers.filter(p=>p.title);if(!valid.length)return;
+  const years=[...new Set(valid.map(p=>p.year).filter(Boolean))].sort();
+  const stop=new Set(['which','these','their','using','based','have','been','this','that','with','from','into','other','show','more','such','high','than','were','also','both','paper','study','results','method']);
+  const freq={};valid.map(p=>p.title).join(' ').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).filter(w=>w.length>4&&!stop.has(w)).forEach(w=>{freq[w]=(freq[w]||0)+1;});
+  const kws=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([w])=>w);
+  document.getElementById('briefTxt').innerHTML=`키워드 <strong>"${esc(kw)}"</strong>로 <strong>${JOURNALS.length}개</strong> 저널 검색 → <strong>${valid.length}편</strong> 수집 완료.`+(years.length?` 출판 연도: <strong>${years[0]}–${years[years.length-1]}</strong>.`:'')+( kws.length?` 주요 키워드: <strong>${kws.join(', ')}</strong>.`:'');
+  document.getElementById('brief').style.display='block';
 }
 
-function extractKeywords(text) {
-  const stop = new Set(['the','a','an','of','in','for','to','and','with','on','by','from','is','are','was','were','that','this','which','be','as','at','we','our','these','their','using','used','based','via','into','or','not','can','have','has','been','its','it','high','show','also','such','than','more','two','new']);
-  const freq = {};
-  text.toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/)
-    .filter(w => w.length > 4 && !stop.has(w))
-    .forEach(w => { freq[w] = (freq[w]||0)+1; });
-  return Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([w])=>w);
+function renderGrid(){
+  const g=document.getElementById('grid');
+  const shown=curFilter==='all'?papers:papers.filter(p=>p.journal.id===curFilter);
+  document.getElementById('pcount').textContent=papers.length?`${shown.filter(p=>p.title).length} 논문`:'';
+  if(!papers.length){g.innerHTML=`<div class="empty"><span class="empty-ico">⏳</span><h3>검색 중...</h3><p>저널에서 논문을 가져오는 중입니다.</p></div>`;return;}
+  const html=shown.filter(p=>p.title).map((p,i)=>cardHTML(p,i)).join('');
+  g.innerHTML=html||`<div class="empty"><span class="empty-ico">🔍</span><h3>결과 없음</h3><p>해당 저널에서 논문을 찾지 못했습니다.</p></div>`;
 }
-
-// ─────────────────────────────────────────────
-// Render
-// ─────────────────────────────────────────────
-function renderGrid() {
-  const g = document.getElementById('grid');
-  const shown = curFilter === 'all'
-    ? papers
-    : papers.filter(p => p.journal.id === curFilter);
-
-  const validCount = shown.filter(p => p.title).length;
-  document.getElementById('pcount').textContent =
-    papers.length ? `${validCount} 논문` : '';
-
-  if (!papers.length) {
-    g.innerHTML = `<div class="empty"><span class="empty-icon">⏳</span><h3>검색 중...</h3><p>저널에서 논문을 수집하고 있습니다.</p></div>`;
-    return;
-  }
-  if (!shown.filter(p=>p.title).length) {
-    g.innerHTML = `<div class="empty"><span class="empty-icon">🔍</span><h3>결과 없음</h3><p>해당 저널에서 관련 논문을 찾지 못했습니다.</p></div>`;
-    return;
-  }
-  g.innerHTML = shown.map((p, i) => cardHTML(p, i)).join('');
+function cardHTML(p,i){
+  const j=p.journal;
+  const doi=p.doi?(p.doi.length>42?p.doi.slice(0,42)+'…':p.doi):'';
+  const sum=p.summaryKo?`<div class="slbl">한국어 번역</div><div class="csum">${esc(p.summaryKo)}</div>`:`<div class="csum pend" id="s${p._id}"><span class="sp"></span>번역 중...</div>`;
+  return`<div class="card" style="animation-delay:${i*.05}s">
+<div class="cstripe" style="background:linear-gradient(90deg,${j.c},${j.c}66)"></div>
+<div class="cbody">
+  <div class="cmeta">
+    <span class="jtag" style="background:${j.bg};color:${j.c};border:1px solid ${j.c}33">
+      <img class="jlogo" src="${j.logo}" onerror="this.style.display='none'" loading="lazy">${esc(j.id)}
+    </span>
+    ${p.year?`<span class="ytag">${p.year}</span>`:''}
+  </div>
+  <div class="ctitle">${esc(p.title)}</div>
+  ${p.authors?`<div class="cauth">${esc(p.authors)}</div>`:''}
+  ${sum}
+  <div class="cfoot">
+    <div class="cdoi" title="${esc(p.doi)}">${doi}</div>
+    <a href="${esc(p.link)}" target="_blank" rel="noopener" class="clink">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>원문
+    </a>
+  </div>
+</div></div>`;
 }
-
-function cardHTML(p, i) {
-  const j = p.journal;
-  if (!p.title) return ''; // skip failed quietly
-
-  const doi = p.doi ? (p.doi.length > 42 ? p.doi.slice(0,42)+'…' : p.doi) : '';
-  const sumPart = p.summaryKo
-    ? `<div class="sum-label">한국어 번역</div><div class="card-sum">${esc(p.summaryKo)}</div>`
-    : `<div class="card-sum pend" id="s${p._id}"><span class="sp"></span>번역 중...</div>`;
-
-  return `<div class="card" style="animation-delay:${i*.05}s">
-    <div class="card-stripe" style="background:linear-gradient(90deg,${j.color},${j.color}55)"></div>
-    <div class="card-body">
-      <div class="card-meta">
-        <span class="jtag" style="background:${j.bg};color:${j.color};border:1px solid ${j.color}33">
-          <img class="jtag-logo" src="${j.logo}" onerror="this.style.display='none'" loading="lazy">
-          ${esc(j.id)}
-        </span>
-        ${p.year ? `<span class="ytag">${p.year}</span>` : ''}
-      </div>
-      <div class="card-title">${esc(p.title)}</div>
-      ${p.authors ? `<div class="card-auth">${esc(p.authors)}</div>` : ''}
-      ${sumPart}
-      <div class="card-foot">
-        <div class="card-doi" title="${esc(p.doi)}">${doi}</div>
-        <a href="${esc(p.link)}" target="_blank" rel="noopener" class="card-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
-            <polyline points="15 3 21 3 21 9"/>
-            <line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>원문
-        </a>
-      </div>
-    </div>
-  </div>`;
+function patchCard(p){const el=document.getElementById(`s${p._id}`);if(el)el.outerHTML=`<div class="slbl">한국어 번역</div><div class="csum">${esc(p.summaryKo)}</div>`;}
+function buildFilters(){
+  const bar=document.getElementById('fbar');
+  [...bar.querySelectorAll('.ftag')].slice(1).forEach(b=>b.remove());
+  JOURNALS.forEach(j=>{const btn=document.createElement('button');btn.className='ftag';btn.innerHTML=`<img class="flogo" src="${j.logo}" onerror="this.style.display='none'" loading="lazy">${j.id}`;btn.onclick=function(){setFilter(this,j.id);};bar.appendChild(btn);});
 }
+function setFilter(btn,f){document.querySelectorAll('.ftag').forEach(b=>b.classList.remove('on'));btn.classList.add('on');curFilter=f;renderGrid();}
+function showProg(v){document.getElementById('prog').style.display=v?'block':'none';}
+function setP(pct,msg){document.getElementById('pfill').style.width=pct+'%';document.getElementById('pmsg').textContent=msg;}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-function patchCard(p) {
-  const el = document.getElementById(`s${p._id}`);
-  if (el) el.outerHTML =
-    `<div class="sum-label">한국어 번역</div><div class="card-sum">${esc(p.summaryKo)}</div>`;
-}
-
-// ─────────────────────────────────────────────
-// Filter / Helpers
-// ─────────────────────────────────────────────
-function buildFilterBar() {
-  const bar = document.getElementById('filterbar');
-  // Remove old journal buttons (keep 전체)
-  [...bar.querySelectorAll('.ftag:not(:first-of-type)')].forEach(b => b.remove());
-  JOURNALS.forEach(j => {
-    const btn = document.createElement('button');
-    btn.className = 'ftag';
-    btn.innerHTML = `<img class="ftag-logo" src="${j.logo}" onerror="this.style.display='none'" loading="lazy">${j.id}`;
-    btn.onclick = function() { setFilter(this, j.id); };
-    bar.appendChild(btn);
-  });
-}
-
-function setFilter(btn, f) {
-  document.querySelectorAll('.ftag').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  curFilter = f;
-  renderGrid();
-}
-function showProg(v) { document.getElementById('progWrap').style.display = v ? 'block' : 'none'; }
-function setProgress(pct, msg) {
-  document.getElementById('progFill').style.width = pct + '%';
-  document.getElementById('progMsg').textContent = msg;
-}
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-function esc(s) {
-  if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ─────────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────────
-(function() {
-  const d = new Date();
-  document.getElementById('hdate').textContent =
-    d.toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric', weekday:'short' });
-  document.title = 'Top Journal Quick Finder';
+(function(){
+  const d=new Date();
+  document.getElementById('hdate').textContent=d.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
 })();
 </script>
 
