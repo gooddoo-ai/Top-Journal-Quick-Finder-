@@ -10,23 +10,23 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:    #f7f8fc;
+  --bg:    #f4f6fb;
   --surf:  #ffffff;
-  --surf2: #f0f3fa;
-  --bdr:   #e2e7f3;
-  --bdr2:  #c8d2e8;
-  --gold:  #d4920a;
-  --gold2: #e8a81a;
-  --gold-light: #fdf3dc;
-  --teal:  #0891b2;
+  --surf2: #eef1f9;
+  --bdr:   #dde3f0;
+  --bdr2:  #b0bcda;
+  --gold:  #c47f08;
+  --gold2: #e09a14;
+  --gold-light: #fef3d0;
+  --teal:  #0882a3;
   --red:   #dc2626;
   --txt:   #0f172a;
   --sub:   #334155;
-  --muted: #94a3b8;
+  --muted: #7e95b8;
   --card:  #ffffff;
-  --shadow-sm: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
-  --shadow-md: 0 4px 16px rgba(15,23,42,.08), 0 1px 3px rgba(15,23,42,.04);
-  --shadow-lg: 0 12px 40px rgba(15,23,42,.1), 0 4px 12px rgba(15,23,42,.06);
+  --shadow-sm: 0 1px 4px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.05);
+  --shadow-md: 0 4px 20px rgba(15,23,42,.10), 0 1px 4px rgba(15,23,42,.06);
+  --shadow-lg: 0 14px 44px rgba(15,23,42,.13), 0 4px 14px rgba(15,23,42,.07);
 }
 *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -76,11 +76,11 @@ main { max-width: 1260px; margin: 0 auto; padding: 2.4rem 1.6rem 5rem; }
 /* ─── HERO / SEARCH ─── */
 .hero {
 margin-bottom: 1.6rem;
-padding: 2.8rem 2.4rem 2.4rem;
-background: var(–surf);
-border: 1px solid var(–bdr);
-border-radius: 20px;
-box-shadow: var(–shadow-md);
+padding: 3rem 2.6rem 2.4rem;
+background: linear-gradient(160deg, #ffffff 0%, #f0f4ff 60%, #e8f4fb 100%);
+border: 1.5px solid #c9d5ef;
+border-radius: 22px;
+box-shadow: 0 2px 8px rgba(15,23,42,.06), 0 8px 32px rgba(15,23,42,.07);
 position: relative;
 overflow: hidden;
 }
@@ -96,11 +96,11 @@ background: linear-gradient(90deg, var(–gold) 0%, #f59e0b 40%, var(–teal) 10
 .hero::after {
 content: ‘’;
 position: absolute; inset: 0; pointer-events: none; z-index: 0;
-background-image: radial-gradient(circle, #e2e7f3 1px, transparent 1px);
-background-size: 24px 24px;
-opacity: .5;
-mask-image: radial-gradient(ellipse 80% 60% at 50% 100%, transparent 0%, black 100%);
--webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 100%, transparent 0%, black 100%);
+background-image: radial-gradient(circle, #b8c8e8 1px, transparent 1px);
+background-size: 26px 26px;
+opacity: .3;
+mask-image: radial-gradient(ellipse 90% 70% at 50% 110%, transparent 0%, black 100%);
+-webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 110%, transparent 0%, black 100%);
 }
 
 .hero-inner { position: relative; z-index: 1; }
@@ -125,69 +125,64 @@ background: linear-gradient(to right, var(–bdr), transparent);
 position: relative;
 display: flex;
 align-items: center;
-margin-bottom: 1.1rem;
+margin-bottom: 1.2rem;
 }
 
-/* Glow ring behind input on focus */
-.search-ring {
-position: absolute; inset: -3px;
-border-radius: 16px;
-background: linear-gradient(135deg, var(–gold), #f59e0b, var(–teal));
-opacity: 0;
-transition: opacity .3s ease;
-pointer-events: none;
-z-index: 0;
-}
-.search-wrap:focus-within .search-ring { opacity: .35; }
+/* Glow ring — reliable box-shadow approach, no extra div needed */
+.search-ring { display: none; } /* unused, kept for HTML compatibility */
 
 .search-box {
 position: relative; z-index: 1;
 display: flex; align-items: center;
 width: 100%;
-background: var(–surf);
-border: 1.5px solid var(–bdr2);
+background: #ffffff;
+border: 2px solid #8fa5cc;           /* clearly visible on white */
 border-radius: 14px;
-overflow: hidden;
-transition: border-color .25s, box-shadow .25s;
-box-shadow: var(–shadow-sm);
+overflow: visible;                    /* allow box-shadow to show */
+transition: border-color .22s, box-shadow .22s;
+box-shadow: 0 2px 8px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.05);
+clip-path: none;                      /* ensure no clipping */
 }
-.search-wrap:focus-within .search-box {
+.search-box:focus-within {
 border-color: var(–gold);
-box-shadow: 0 0 0 4px rgba(212,146,10,.1), var(–shadow-md);
+box-shadow:
+0 0 0 4px rgba(196,127,8,.15),
+0 4px 20px rgba(196,127,8,.18),
+0 1px 3px rgba(15,23,42,.08);
 }
 
 /* Magnifier icon area */
 .search-icon-area {
 display: flex; align-items: center; justify-content: center;
 width: 52px; flex-shrink: 0;
-color: var(–muted);
+color: #8fa5cc;
 transition: color .25s;
 }
-.search-wrap:focus-within .search-icon-area { color: var(–gold); }
-.search-icon-area svg { width: 17px; height: 17px; stroke-width: 2; }
+.search-box:focus-within .search-icon-area { color: var(–gold); }
+.search-icon-area svg { width: 18px; height: 18px; stroke-width: 2.2; }
 
 /* The actual input */
 .hero-input {
 flex: 1;
 background: transparent;
 border: none;
-padding: .9rem .4rem .9rem 0;
-font-size: .93rem;
+padding: 1rem .4rem 1rem 0;
+font-size: .97rem;
 font-family: ‘DM Sans’, sans-serif;
 color: var(–txt);
 outline: none;
 min-width: 0;
 line-height: 1.4;
 }
-.hero-input::placeholder { color: var(–muted); font-size: .88rem; }
+.hero-input::placeholder { color: #a0b3cf; font-size: .88rem; }
 
 /* Divider before button */
 .search-divider {
 width: 1px; height: 28px;
-background: var(–bdr2); flex-shrink: 0;
+background: #b0bcda; flex-shrink: 0;
 transition: background .25s;
 }
-.search-wrap:focus-within .search-divider { background: rgba(212,146,10,.3); }
+.search-box:focus-within .search-divider { background: rgba(196,127,8,.4); }
 
 /* Clear button */
 .search-clear {
@@ -205,28 +200,28 @@ margin: 0 2px;
 /* Search button */
 .hero-btn {
 display: flex; align-items: center; gap: .5rem;
-background: var(–gold);
+background: linear-gradient(135deg, #d48a0a 0%, #c47408 100%);
 border: none; border-radius: 10px;
 color: #fff;
-padding: .72rem 1.5rem;
-margin: 5px;
+padding: .8rem 1.6rem;
+margin: 6px;
 font-family: ‘IBM Plex Mono’, monospace;
-font-size: .73rem; font-weight: 600; letter-spacing: .07em;
+font-size: .74rem; font-weight: 600; letter-spacing: .08em;
 cursor: pointer; white-space: nowrap; flex-shrink: 0;
 transition: background .15s, transform .12s, box-shadow .15s;
-box-shadow: 0 2px 8px rgba(212,146,10,.3), inset 0 1px 0 rgba(255,255,255,.2);
+box-shadow: 0 2px 10px rgba(196,127,8,.4), inset 0 1px 0 rgba(255,255,255,.18);
 position: relative; overflow: hidden;
 }
 .hero-btn::after {
 content: ‘’;
 position: absolute; inset: 0;
-background: linear-gradient(to bottom, rgba(255,255,255,.12), transparent);
+background: linear-gradient(to bottom, rgba(255,255,255,.15), transparent);
 pointer-events: none;
 }
 .hero-btn:hover:not(:disabled) {
-background: var(–gold2);
+background: linear-gradient(135deg, #e09a14 0%, #d48a0a 100%);
 transform: translateY(-1px);
-box-shadow: 0 4px 16px rgba(212,146,10,.35), inset 0 1px 0 rgba(255,255,255,.2);
+box-shadow: 0 5px 18px rgba(196,127,8,.45), inset 0 1px 0 rgba(255,255,255,.18);
 }
 .hero-btn:active:not(:disabled) { transform: translateY(0); }
 .hero-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
